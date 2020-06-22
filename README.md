@@ -70,3 +70,47 @@
 * `is:issue` 指定在问题中搜索，否则是对整个仓库的搜索；
 * `is:open` 是搜索未关闭的问题，类似的还有 `is:closed` 搜索已关闭的问题，去掉这类条件则搜索所有问题；
 * `label:xxxx` 在带有 `xxxx` 标签的问题中搜索，管理员会给问题打上不同的标签，具体可用标签及其含义可以点击搜索框右边的 `Labels` 按钮来查看。
+
+## 附：解决访问 GitHub 的一些问题
+
+由于某些原因，访问 GitHub 有时会碰到一些问题，比如头像显示不出来，或者访问 `raw.githubusercontent.com` 这个域名下的资源出错——这个问题还会影响安装 Scoop 和 Homebrew……这些问题都是因为没有正确进行域名解析导致的，这类问题可以通过修改操作系统的一个叫做 `hosts` 的配置文件来（临时）解决。下面是具体方法。
+
+* 访问 [ipaddress.com](https://www.ipaddress.com/)，查询 `github.com` 域名对应的 IP
+    * 比如在我的系统里查出来是 `140.82.113.4`
+	* 可以用命令行下的 `ping` 命令做测试：`ping 140.82.113.4`，如果正常你可以看到访问这个 IP 的时间
+
+* 准备一个名为 `hosts` 的空文本文件（文件名就叫 `hosts` 没有任何后缀），将我们查到的域名和对应 IP 写进去
+    * 下面是我测试可用的，但在你的网络环境下不一定好用，你可以先用这些配置测试，如果访问某个域名出现问题，就用上面的方法自己去查和测试
+```
+# GitHub
+140.82.113.4 github.com
+140.82.113.3 gist.github.com
+185.199.108.153 assets-cdn.github.com
+199.232.68.133 raw.githubusercontent.com
+199.232.68.133 gist.githubusercontent.com
+199.232.68.133 cloud.githubusercontent.com
+199.232.68.133 camo.githubusercontent.com
+199.232.68.133 avatars0.githubusercontent.com
+199.232.68.133 avatars1.githubusercontent.com
+199.232.68.133 avatars2.githubusercontent.com
+199.232.68.133 avatars3.githubusercontent.com
+199.232.68.133 avatars4.githubusercontent.com
+199.232.68.133 avatars5.githubusercontent.com
+199.232.68.133 avatars6.githubusercontent.com
+199.232.68.133 avatars7.githubusercontent.com
+199.232.68.133 avatars8.githubusercontent.com
+140.82.113.5 api.github.com
+```
+
+* 将上述 hosts 文件拷贝到系统位置
+	* Windows：`C:\Windows\System32\drivers\hosts`
+	* macOS：`/etc/hosts`
+	* 注意如果拷贝时说文件已存在的话，不要覆盖掉，而应该打开上述位置已存在的系统配置文件，将上面列出的内容追加到已存在配置文件的最后才对
+	* 上述拷贝或编辑修改操作均需要系统管理员权限
+
+* 在命令行执行下面的命令，以更新 DNS 缓存令上述修改生效：
+	* Windows：`ipconfig /flushdns`
+	* macOS：`sudo killall -HUP mDNSResponder`
+
+* 重新打开浏览器，应该可以正常访问 GitHub 的各项服务
+	* 或者重新执行命令行的命令，例如 Scoop 和 Homebrew 的安装都需要访问 raw.githubusercontent.com 域名
