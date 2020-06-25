@@ -103,7 +103,7 @@
 ```
 
 * 将上述 hosts 文件拷贝到系统位置
-	* Windows：`C:\Windows\System32\drivers\hosts`
+	* Windows：`C:\Windows\System32\drivers\etc\hosts`
 	* macOS：`/etc/hosts`
 	* 注意：**如果拷贝时说文件已存在的话，不要覆盖掉，而应该打开上述位置已存在的系统配置文件，将上面列出的内容追加到已存在配置文件的最后才对**
 	* 上述拷贝或编辑修改操作均需要系统管理员权限
